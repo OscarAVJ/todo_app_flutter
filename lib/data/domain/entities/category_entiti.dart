@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+part 'category_entiti.g.dart';
 
 @collection
 class CategoryEntity {

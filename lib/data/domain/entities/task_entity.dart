@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+part 'task_entity.g.dart';
 
 @collection
 class TaskEntity {
@@ -6,7 +7,7 @@ class TaskEntity {
 
   final String title;
   final String? description;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final DateTime? dueDate;
   final bool isCompleted;
   final int? categoryId;
@@ -14,9 +15,9 @@ class TaskEntity {
   TaskEntity({
     required this.title,
     this.description,
-    DateTime? createdAt,
+    this.createdAt,
     this.dueDate,
     this.isCompleted = false,
     this.categoryId,
-  }) : createdAt = createdAt ?? DateTime.now();
+  });
 }
