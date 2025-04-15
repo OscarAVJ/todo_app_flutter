@@ -3,16 +3,17 @@ part 'task_entity.g.dart';
 
 @collection
 class TaskEntity {
-  Id id = Isar.autoIncrement;
+  Id id;
 
   final String title;
   final String? description;
   final DateTime? createdAt;
   final DateTime? dueDate;
-  final bool isCompleted;
+  bool isCompleted;
   final int? categoryId;
 
   TaskEntity({
+    this.id = Isar.autoIncrement,
     required this.title,
     this.description,
     this.createdAt,

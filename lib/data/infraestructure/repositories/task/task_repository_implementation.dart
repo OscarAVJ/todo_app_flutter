@@ -15,4 +15,14 @@ class TaskRepositoryImplementation extends TaskRepository {
   Future<List<TaskEntity>> loadTasks({int limit = 5, offset = 0}) {
     return datasource.loadTasks(offset: offset, limit: limit);
   }
+
+  @override
+  Future<void> toogleComplete(TaskEntity task) {
+    return datasource.toogleComplete(task);
+  }
+
+  @override
+  Future<void> deleteTask(TaskEntity task) {
+    return datasource.deleteTask(task);
+  }
 }

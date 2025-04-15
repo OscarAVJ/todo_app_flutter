@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app_flutter/presentation/screens/home/all_tab.dart';
 import 'package:todo_app_flutter/presentation/screens/home/compleated_tab.dart';
 import 'package:todo_app_flutter/presentation/screens/home/pending_tab.dart';
 import 'package:todo_app_flutter/presentation/widgets/shared/custom_app_bar.dart';
 import 'package:todo_app_flutter/presentation/widgets/shared/custom_drawer.dart';
+import 'package:todo_app_flutter/presentation/widgets/task/task_form.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   //! Nombre de ruta estática para navegación
   static const name = 'home_screen';
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  HomeViewState createState() => HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     //! Envuelve todo en un controlador de pestañas con 3 tabs
@@ -75,10 +77,35 @@ class _HomeViewState extends State<HomeView> {
             children: [AllTab(), CompletedTab(), PendingTab()],
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showAddTaskModal(context),
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }
+
+  /// Método para mostrar el modal con el formulario
+  void _showAddTaskModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 16,
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: TaskForm(),
+        );
+      },
+    );
+  }
 }
+
+/// Widget del formulario para agregar una nueva tarea
 
 ///
 /// Delegate para renderizar el TabBar dentro del SliverPersistentHeader

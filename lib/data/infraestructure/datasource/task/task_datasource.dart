@@ -34,14 +34,29 @@ class TaskDatasourceImpl extends TaskDatasource {
     final isar = await db;
 
     /// Usar una transacción explícita para la operación de escritura
-    await isar.writeTxn(() async {
-      await isar.taskEntitys.put(task);
-    });
+    // await isar.writeTxn(() async {
+    //   await isar.taskEntitys.put(task);
+    // });
+    isar.writeTxnSync(() => isar.taskEntitys.putSync(task));
+  }
+
+  @override
+  Future<void> toogleComplete(TaskEntity task) async {
+    final isar = await db;
+    isar.writeTxnSync(() => isar.taskEntitys.putSync(task));
   }
 
   @override
   Future<List<TaskEntity>> loadTasks({int limit = 5, offset = 0}) async {
     final isar = await db;
     return isar.taskEntitys.where().offset(offset).limit(limit).findAll();
+  }
+
+  @override
+  Future<void> deleteTask(TaskEntity task) async {
+    final isar = await db;
+    await isar.writeTxn(() async {
+      await isar.taskEntitys.delete(task.id);
+    });
   }
 }
