@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app_flutter/data/domain/entities/task_entity.dart';
-import 'package:todo_app_flutter/providers/task_provider/task_provider.dart';
+import 'package:todo_app_flutter/presentation/providers/task_provider/task_provider.dart';
 
 // * Formulario para crear o editar tareas
 class TaskForm extends ConsumerStatefulWidget {

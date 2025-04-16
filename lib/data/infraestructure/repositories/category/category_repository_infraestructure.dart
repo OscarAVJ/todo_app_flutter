@@ -1,22 +1,24 @@
+import 'package:todo_app_flutter/data/domain/datasource/category/category_datasource_domain.dart';
 import 'package:todo_app_flutter/data/domain/entities/category_entiti.dart';
 import 'package:todo_app_flutter/data/domain/repositories/category_repository.dart/category_repositorie_domain.dart';
 
 class CategoryRepositoryInfraestructure extends CategoryRepositorieDomain {
+  final CategoryDatasourceDomain dt;
+
+  CategoryRepositoryInfraestructure(this.dt);
+
   @override
   Future<void> createCategory(CategoryEntity category) {
-    // TODO: implement createCategory
-    throw UnimplementedError();
+    return dt.createCategory(category);
   }
 
   @override
   Future<void> deleteCategory(CategoryEntity category) {
-    // TODO: implement deleteCategory
-    throw UnimplementedError();
+    return dt.deleteCategory(category);
   }
 
   @override
   Future<List<CategoryEntity>> loadCategories({int limit = 5, int offset = 0}) {
-    // TODO: implement loadCategories
-    throw UnimplementedError();
+    return dt.loadCategories(offset: offset, limit: limit);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app_flutter/presentation/widgets/task/task_item.dart';
-import 'package:todo_app_flutter/providers/task_provider/task_provider.dart';
+import 'package:todo_app_flutter/presentation/providers/task_provider/task_provider.dart';
 
 //!Tab bar con todas las tareas
 class AllTab extends ConsumerStatefulWidget {
