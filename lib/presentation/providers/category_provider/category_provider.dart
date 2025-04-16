@@ -38,12 +38,20 @@ class CategoryNotifier extends StateNotifier<List<CategoryEntity>> {
     state = [...state, category];
   }
 
-  Future<void> editTask(CategoryEntity category) async {
+  Future<void> editCaterory(CategoryEntity category) async {
     await categoryRepository.createCategory(category);
     state = [
       for (final cat in state)
         if (cat.id == category.id) category else cat,
     ];
+  }
+
+  Future<List<CategoryEntity>> loadAllCategories(
+    CategoryEntity category,
+  ) async {
+    final categories = await categoryRepository.loadAllCategories();
+    state = categories;
+    return categories;
   }
 
   Future<void> deleteCategory(CategoryEntity category) async {

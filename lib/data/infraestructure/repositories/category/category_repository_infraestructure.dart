@@ -21,4 +21,9 @@ class CategoryRepositoryInfraestructure extends CategoryRepositorieDomain {
   Future<List<CategoryEntity>> loadCategories({int limit = 5, int offset = 0}) {
     return dt.loadCategories(offset: offset, limit: limit);
   }
+
+  @override
+  Future<List<CategoryEntity>> loadAllCategories() {
+    return dt.loadAllCategories();
+  }
 }

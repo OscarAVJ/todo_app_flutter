@@ -4,4 +4,5 @@ abstract class CategoryRepositorieDomain {
   Future<void> createCategory(CategoryEntity category);
   Future<List<CategoryEntity>> loadCategories({int limit = 5, int offset = 0});
   Future<void> deleteCategory(CategoryEntity category);
+  Future<List<CategoryEntity>> loadAllCategories();
 }

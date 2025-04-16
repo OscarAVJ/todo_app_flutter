@@ -13,13 +13,20 @@ class CategoryDatasourceInfraestructure extends CategoryDatasourceDomain {
 
   Future<Isar> openDB() async {
     final dir = await getApplicationCacheDirectory();
+
+    /// En caso de que no tengamos una instancia creada retornamos Isar.Open
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
-        [TaskEntitySchema],
+        [
+          CategoryEntitySchema,
+          TaskEntitySchema,
+        ], // Asegúrate de incluir todos los esquemas necesarios
+        inspector: true, // Permite inspeccionar la base de datos
         directory: dir.path,
-        inspector: true,
       );
     }
+
+    /// Si ya hay una instancia, retornamos esa instancia
     return Future.value(Isar.getInstance());
   }
 
@@ -44,5 +51,11 @@ class CategoryDatasourceInfraestructure extends CategoryDatasourceDomain {
   }) async {
     final isar = await db;
     return isar.categoryEntitys.where().offset(offset).limit(limit).findAll();
+  }
+
+  @override
+  Future<List<CategoryEntity>> loadAllCategories() async {
+    final isar = await db;
+    return isar.categoryEntitys.where().findAll();
   }
 }

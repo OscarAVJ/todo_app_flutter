@@ -3,11 +3,16 @@ part 'category_entiti.g.dart';
 
 @collection
 class CategoryEntity {
-  Id id = Isar.autoIncrement;
+  Id id;
 
   final String name;
   final int color; // Puedes guardar un color como entero (Colors.red.value)
   final int? icon;
 
-  CategoryEntity({required this.name, required this.color, this.icon});
+  CategoryEntity({
+    this.id = Isar.autoIncrement,
+    required this.name,
+    required this.color,
+    this.icon,
+  });
 }

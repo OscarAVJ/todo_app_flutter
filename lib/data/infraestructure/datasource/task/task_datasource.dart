@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
 import 'package:todo_app_flutter/data/domain/datasource/task/task_datasource.dart';
+import 'package:todo_app_flutter/data/domain/entities/category_entiti.dart';
 import 'package:todo_app_flutter/data/domain/entities/task_entity.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -17,7 +18,7 @@ class TaskDatasourceImpl extends TaskDatasource {
     /// En caso de que no tengamos una instancia creada retornamos Isar.Open
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
-        [TaskEntitySchema],
+        [TaskEntitySchema, CategoryEntitySchema],
 
         /// Inspector permite inspeccionar la base de datos en el dispositivo
         inspector: true,
