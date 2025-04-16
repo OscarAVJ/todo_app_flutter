@@ -54,8 +54,8 @@ class TaskNotifier extends StateNotifier<List<TaskEntity>> {
 
     // Update the state
     state = [
-      for (final t in state)
-        if (t.id == task.id) task else t,
+      for (final task in state)
+        if (task.id == task.id) task else task,
     ];
   }
 

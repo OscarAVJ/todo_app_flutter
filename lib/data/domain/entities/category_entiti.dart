@@ -6,6 +6,8 @@ class CategoryEntity {
   Id id = Isar.autoIncrement;
 
   final String name;
+  final int color; // Puedes guardar un color como entero (Colors.red.value)
+  final int? icon;
 
-  CategoryEntity({required this.name});
+  CategoryEntity({required this.name, required this.color, this.icon});
 }

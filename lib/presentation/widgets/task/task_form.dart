@@ -73,7 +73,7 @@ class _TaskFormState extends ConsumerState<TaskForm> {
           Row(
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const Text(
                     'Fecha límite:',
@@ -85,7 +85,7 @@ class _TaskFormState extends ConsumerState<TaskForm> {
                   const SizedBox(height: 8),
                   Text(
                     _dueDate == null
-                        ? 'Fecha -----'
+                        ? '-------------'
                         : DateFormat.yMMMd().format(_dueDate!),
                     style: const TextStyle(
                       fontSize: 14,

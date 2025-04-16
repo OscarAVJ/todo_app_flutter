@@ -17,8 +17,18 @@ const CategoryEntitySchema = CollectionSchema(
   name: r'CategoryEntity',
   id: -4373275164811429968,
   properties: {
-    r'name': PropertySchema(
+    r'color': PropertySchema(
       id: 0,
+      name: r'color',
+      type: IsarType.long,
+    ),
+    r'icon': PropertySchema(
+      id: 1,
+      name: r'icon',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 2,
       name: r'name',
       type: IsarType.string,
     )
@@ -53,7 +63,9 @@ void _categoryEntitySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.name);
+  writer.writeLong(offsets[0], object.color);
+  writer.writeLong(offsets[1], object.icon);
+  writer.writeString(offsets[2], object.name);
 }
 
 CategoryEntity _categoryEntityDeserialize(
@@ -63,7 +75,9 @@ CategoryEntity _categoryEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = CategoryEntity(
-    name: reader.readString(offsets[0]),
+    color: reader.readLong(offsets[0]),
+    icon: reader.readLongOrNull(offsets[1]),
+    name: reader.readString(offsets[2]),
   );
   object.id = id;
   return object;
@@ -77,6 +91,10 @@ P _categoryEntityDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
+      return (reader.readLong(offset)) as P;
+    case 1:
+      return (reader.readLongOrNull(offset)) as P;
+    case 2:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -179,6 +197,136 @@ extension CategoryEntityQueryWhere
 
 extension CategoryEntityQueryFilter
     on QueryBuilder<CategoryEntity, CategoryEntity, QFilterCondition> {
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      colorEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'color',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      colorGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'color',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      colorLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'color',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      colorBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'color',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      iconIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'icon',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      iconIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'icon',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      iconEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'icon',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      iconGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'icon',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      iconLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'icon',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition>
+      iconBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'icon',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<CategoryEntity, CategoryEntity, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -379,6 +527,30 @@ extension CategoryEntityQueryLinks
 
 extension CategoryEntityQuerySortBy
     on QueryBuilder<CategoryEntity, CategoryEntity, QSortBy> {
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> sortByColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> sortByColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> sortByIcon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'icon', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> sortByIconDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'icon', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -394,6 +566,30 @@ extension CategoryEntityQuerySortBy
 
 extension CategoryEntityQuerySortThenBy
     on QueryBuilder<CategoryEntity, CategoryEntity, QSortThenBy> {
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> thenByColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> thenByColorDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'color', Sort.desc);
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> thenByIcon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'icon', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> thenByIconDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'icon', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryEntity, CategoryEntity, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -421,6 +617,18 @@ extension CategoryEntityQuerySortThenBy
 
 extension CategoryEntityQueryWhereDistinct
     on QueryBuilder<CategoryEntity, CategoryEntity, QDistinct> {
+  QueryBuilder<CategoryEntity, CategoryEntity, QDistinct> distinctByColor() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'color');
+    });
+  }
+
+  QueryBuilder<CategoryEntity, CategoryEntity, QDistinct> distinctByIcon() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'icon');
+    });
+  }
+
   QueryBuilder<CategoryEntity, CategoryEntity, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -434,6 +642,18 @@ extension CategoryEntityQueryProperty
   QueryBuilder<CategoryEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<CategoryEntity, int, QQueryOperations> colorProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'color');
+    });
+  }
+
+  QueryBuilder<CategoryEntity, int?, QQueryOperations> iconProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'icon');
     });
   }
 

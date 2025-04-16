@@ -103,10 +103,10 @@ TaskEntity _taskEntityDeserialize(
     createdAt: reader.readDateTimeOrNull(offsets[1]),
     description: reader.readStringOrNull(offsets[2]),
     dueDate: reader.readDateTimeOrNull(offsets[3]),
+    id: id,
     isCompleted: reader.readBoolOrNull(offsets[4]) ?? false,
     title: reader.readString(offsets[5]),
   );
-  object.id = id;
   return object;
 }
 

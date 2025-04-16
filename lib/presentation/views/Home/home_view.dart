@@ -19,11 +19,11 @@ class HomeView extends ConsumerStatefulWidget {
 class HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
-    //! Envuelve todo en un controlador de pestañas con 3 tabs
+    //! Creamos el tab como 3 pestañas
     return DefaultTabController(
-      length: 3,
+      length: 3, //Cantidad de pestañas
       child: Scaffold(
-        /// Drawer lateral personalizado
+        /// Agregamos nuestro drawer personalizado
         drawer: CustomDrawer(scaffoldKey: GlobalKey<ScaffoldState>()),
 
         /// NestedScrollView permite usar Slivers + TabBarView correctamente
@@ -31,7 +31,8 @@ class HomeViewState extends ConsumerState<HomeView> {
           physics: const BouncingScrollPhysics(),
           headerSliverBuilder:
               (context, innerBoxIsScrolled) => [
-                //! AppBar superior que se queda fija (pinned)
+                //! Creamos nuestro appBar personalizado
+                //! Al envolverlo con SliverAppBar, queda fijado
                 SliverAppBar(
                   title: const CustomAppBar(),
                   pinned: true,
@@ -39,7 +40,8 @@ class HomeViewState extends ConsumerState<HomeView> {
                   expandedHeight: 0, // no se expande
                 ),
 
-                /// Sección de bienvenida antes de las pestañas
+                /// Sección de bienvenida
+                /// SliverToBoxAdapter permite agregar widgets normales dento de nuestro sliver
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -77,6 +79,7 @@ class HomeViewState extends ConsumerState<HomeView> {
             children: [AllTab(), CompletedTab(), PendingTab()],
           ),
         ),
+        //!Boton de agregar una task
         floatingActionButton: FloatingActionButton(
           onPressed: () => _showAddTaskModal(context),
           child: const Icon(Icons.add),
@@ -96,7 +99,7 @@ class HomeViewState extends ConsumerState<HomeView> {
             top: 16,
             left: 16,
             right: 16,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 30,
           ),
           child: TaskForm(),
         );
@@ -105,11 +108,7 @@ class HomeViewState extends ConsumerState<HomeView> {
   }
 }
 
-/// Widget del formulario para agregar una nueva tarea
-
-///
 /// Delegate para renderizar el TabBar dentro del SliverPersistentHeader
-///
 class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar tabBar;
   const _TabBarDelegate({required this.tabBar});
