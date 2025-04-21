@@ -72,33 +72,6 @@ class TaskNotifier extends StateNotifier<List<TaskEntity>> {
     return newTasks; // Devolver las nuevas tareas cargadas
   }
 
-  Future<List<TaskEntity>> loadParameter2({
-    bool? isCompleted, // Filtro opcional para tareas completadas
-    int limit = 5,
-    int offset = 0,
-  }) async {
-    if (_isLoading) return []; // Evitar múltiples cargas simultáneas
-
-    _isLoading = true;
-
-    // Cargar las tareas basadas en el filtro proporcionado
-    final newTasks = await taskRepository.loadWithParameter2(
-      isCompleted,
-      offset: 5 * page,
-      limit: 5,
-    );
-
-    if (newTasks.isNotEmpty) {
-      // Agregar las nuevas tareas al estado existente
-      state = [...state, ...newTasks];
-      page++; // Incrementar el contador de páginas solo si hay nuevas tareas
-    }
-
-    _isLoading = false;
-
-    return newTasks; // Devolver las nuevas tareas cargadas
-  }
-
   Future<void> toggleTaskCompletion(TaskEntity task) async {
     // Toggle the completion status
     task.isCompleted = !task.isCompleted;

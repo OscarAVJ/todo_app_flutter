@@ -25,7 +25,7 @@ class PendingTabState extends ConsumerState<PendingTab> {
     isLoading = true;
 
     ///Llamamos al provider de tareas para cargar la siguiente pagina
-    final newTasks = await ref.read(tasksProvider.notifier).loadParameter2();
+    final newTasks = await ref.read(tasksProvider.notifier).loadParameter();
 
     ///Como ya termino la accion isLoading pasa a ser falso
     isLoading = false;

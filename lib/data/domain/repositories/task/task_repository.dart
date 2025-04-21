@@ -10,9 +10,4 @@ abstract class TaskRepository {
     int limit = 5,
     offset = 0,
   });
-  Future<List<TaskEntity>> loadWithParameter2(
-    bool? isCompleted, {
-    int limit = 5,
-    offset = 0,
-  });
 }
