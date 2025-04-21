@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app_flutter/presentation/providers/task_provider/task_provider.dart';
+
 import 'package:todo_app_flutter/presentation/screens/home/all_tab.dart';
 import 'package:todo_app_flutter/presentation/screens/home/compleated_tab.dart';
 import 'package:todo_app_flutter/presentation/screens/home/pending_tab.dart';
 import 'package:todo_app_flutter/presentation/widgets/shared/custom_app_bar.dart';
 import 'package:todo_app_flutter/presentation/widgets/shared/custom_drawer.dart';
+import 'package:todo_app_flutter/presentation/widgets/task/task_form.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   //! Nombre de ruta estática para navegación
   static const name = 'home_screen';
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  HomeViewState createState() => HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
-    //! Envuelve todo en un controlador de pestañas con 3 tabs
+    final allTasks = ref.watch(tasksProvider);
+    final completedTasks =
+        allTasks
+            .where((task) => task.isCompleted)
+            .toList(); // Filtrar tareas completadas
+    final noCompleted = allTasks.where((task) => !task.isCompleted).toList();
+    //! Creamos el tab como 3 pestañas
     return DefaultTabController(
-      length: 3,
+      length: 3, //Cantidad de pestañas
       child: Scaffold(
-        /// Drawer lateral personalizado
+        /// Agregamos nuestro drawer personalizado
         drawer: CustomDrawer(scaffoldKey: GlobalKey<ScaffoldState>()),
 
         /// NestedScrollView permite usar Slivers + TabBarView correctamente
@@ -29,7 +39,8 @@ class _HomeViewState extends State<HomeView> {
           physics: const BouncingScrollPhysics(),
           headerSliverBuilder:
               (context, innerBoxIsScrolled) => [
-                //! AppBar superior que se queda fija (pinned)
+                //! Creamos nuestro appBar personalizado
+                //! Al envolverlo con SliverAppBar, queda fijado
                 SliverAppBar(
                   title: const CustomAppBar(),
                   pinned: true,
@@ -37,7 +48,8 @@ class _HomeViewState extends State<HomeView> {
                   expandedHeight: 0, // no se expande
                 ),
 
-                /// Sección de bienvenida antes de las pestañas
+                /// Sección de bienvenida
+                /// SliverToBoxAdapter permite agregar widgets normales dento de nuestro sliver
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -71,18 +83,44 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ],
           //! Contenido de cada pestaña
-          body: const TabBarView(
-            children: [AllTab(), CompletedTab(), PendingTab()],
+          body: TabBarView(
+            children: [
+              const AllTab(),
+              CompletedTab(tasks: completedTasks), // Pasar tareas completadas
+              PendingTab(tasks: noCompleted),
+            ],
           ),
+        ),
+        //!Boton de agregar una task
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => _showAddTaskModal(context),
+          child: const Icon(Icons.add),
         ),
       ),
     );
   }
+
+  /// Método para mostrar el modal con el formulario
+  void _showAddTaskModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 16,
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 30,
+          ),
+          child: TaskForm(),
+        );
+      },
+    );
+  }
 }
 
-///
 /// Delegate para renderizar el TabBar dentro del SliverPersistentHeader
-///
 class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar tabBar;
   const _TabBarDelegate({required this.tabBar});
