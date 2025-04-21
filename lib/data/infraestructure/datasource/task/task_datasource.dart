@@ -60,4 +60,40 @@ class TaskDatasourceImpl extends TaskDatasource {
       await isar.taskEntitys.delete(task.id);
     });
   }
+
+  @override
+  Future<List<TaskEntity>> loadWithParameter(
+    bool? isCompleted, {
+    int limit = 5,
+    offset = 0,
+  }) async {
+    final isar = await db;
+
+    // Filtrar las tareas basadas en el estado de completado
+    final query = isar.taskEntitys.where();
+
+    if (isCompleted != null) {
+      query.filter().isCompletedEqualTo(isCompleted);
+    }
+
+    return query.offset(offset).limit(limit).findAll();
+  }
+
+  @override
+  Future<List<TaskEntity>> loadWithParameter2(
+    bool? isCompleted, {
+    int limit = 5,
+    offset = 0,
+  }) async {
+    final isar = await db;
+
+    // Filtrar las tareas basadas en el estado de completado
+    final query = isar.taskEntitys.where();
+
+    if (isCompleted != null) {
+      query.filter().isCompletedEqualTo(!isCompleted);
+    }
+
+    return query.offset(offset).limit(limit).findAll();
+  }
 }

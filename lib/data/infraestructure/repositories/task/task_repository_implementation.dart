@@ -25,4 +25,30 @@ class TaskRepositoryImplementation extends TaskRepository {
   Future<void> deleteTask(TaskEntity task) {
     return datasource.deleteTask(task);
   }
+
+  @override
+  Future<List<TaskEntity>> loadWithParameter(
+    bool? isCompleted, {
+    int limit = 5,
+    offset = 0,
+  }) {
+    return datasource.loadWithParameter(
+      isCompleted,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
+  Future<List<TaskEntity>> loadWithParameter2(
+    bool? isCompleted, {
+    int limit = 5,
+    offset = 0,
+  }) {
+    return datasource.loadWithParameter(
+      isCompleted,
+      offset: offset,
+      limit: limit,
+    );
+  }
 }

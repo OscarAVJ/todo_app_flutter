@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_app_flutter/presentation/providers/task_provider/task_provider.dart';
 
 import 'package:todo_app_flutter/presentation/screens/home/all_tab.dart';
 import 'package:todo_app_flutter/presentation/screens/home/compleated_tab.dart';
@@ -20,6 +21,12 @@ class HomeView extends ConsumerStatefulWidget {
 class HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
+    final allTasks = ref.watch(tasksProvider);
+    final completedTasks =
+        allTasks
+            .where((task) => task.isCompleted)
+            .toList(); // Filtrar tareas completadas
+    final noCompleted = allTasks.where((task) => !task.isCompleted).toList();
     //! Creamos el tab como 3 pestañas
     return DefaultTabController(
       length: 3, //Cantidad de pestañas
@@ -76,8 +83,12 @@ class HomeViewState extends ConsumerState<HomeView> {
                 ),
               ],
           //! Contenido de cada pestaña
-          body: const TabBarView(
-            children: [AllTab(), CompletedTab(), PendingTab()],
+          body: TabBarView(
+            children: [
+              const AllTab(),
+              CompletedTab(tasks: completedTasks), // Pasar tareas completadas
+              PendingTab(tasks: noCompleted),
+            ],
           ),
         ),
         //!Boton de agregar una task

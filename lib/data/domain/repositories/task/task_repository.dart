@@ -5,4 +5,14 @@ abstract class TaskRepository {
   Future<List<TaskEntity>> loadTasks({int limit = 5, offset = 0});
   Future<void> toogleComplete(TaskEntity task);
   Future<void> deleteTask(TaskEntity task);
+  Future<List<TaskEntity>> loadWithParameter(
+    bool? isCompleted, {
+    int limit = 5,
+    offset = 0,
+  });
+  Future<List<TaskEntity>> loadWithParameter2(
+    bool? isCompleted, {
+    int limit = 5,
+    offset = 0,
+  });
 }
