@@ -40,24 +40,6 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
     });
   }
 
-  void _showAddTaskModal(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return Padding(
-          padding: EdgeInsets.only(
-            top: 16,
-            left: 16,
-            right: 16,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-          ),
-          child: CategoryForm(),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final category = ref.watch(categoryProvider);
@@ -103,6 +85,24 @@ class CategoryScreenState extends ConsumerState<CategoryScreen> {
           child: Icon(Icons.add),
         ),
       ),
+    );
+  }
+
+  void _showAddTaskModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 16,
+            left: 16,
+            right: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: CategoryForm(),
+        );
+      },
     );
   }
 }

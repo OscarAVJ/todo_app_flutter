@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_app_flutter/data/domain/entities/category_entiti.dart';
@@ -28,57 +30,50 @@ class CategoryItemState extends ConsumerState<CategoryItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      // ignore: deprecated_member_use
-      color: widget.color.withOpacity(0.8),
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(widget.icon, size: 32), // Mostrar el ícono
-            const SizedBox(width: 16),
-            Text(
-              widget.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Spacer(),
-            PopupMenuButton(
-              icon: Icon(Icons.more_vert),
-              onSelected: (Menu item) {
-                switch (item) {
-                  case Menu.edit:
-                    _showEditTaskModal(context);
-                    break;
-                  case Menu.delete:
-                    deleteCategory(context);
-                    break;
-                }
-              },
-              itemBuilder:
-                  (context) => <PopupMenuEntry<Menu>>[
-                    PopupMenuItem(
-                      value: Menu.edit,
-                      child: ListTile(
-                        leading: Icon(Icons.edit),
-                        title: Text('Editar'),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: Menu.delete,
-                      child: ListTile(
-                        leading: Icon(Icons.delete),
-                        title: Text('Eliminar'),
-                      ),
-                    ),
-                  ],
-            ),
-          ],
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 10,
+        ),
+        leading: CircleAvatar(
+          backgroundColor: widget.color.withOpacity(0.8),
+          child: Icon(widget.icon, color: Colors.white),
+        ),
+        title: Text(
+          widget.title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        trailing: PopupMenuButton<Menu>(
+          icon: const Icon(Icons.more_vert),
+          onSelected: (item) {
+            switch (item) {
+              case Menu.edit:
+                _showEditTaskModal(context);
+                break;
+              case Menu.delete:
+                deleteCategory(context);
+                break;
+            }
+          },
+          itemBuilder:
+              (context) => <PopupMenuEntry<Menu>>[
+                const PopupMenuItem(
+                  value: Menu.edit,
+                  child: ListTile(
+                    leading: Icon(Icons.edit, color: Colors.blue),
+                    title: Text('Editar'),
+                  ),
+                ),
+                const PopupMenuItem(
+                  value: Menu.delete,
+                  child: ListTile(
+                    leading: Icon(Icons.delete, color: Colors.red),
+                    title: Text('Eliminar'),
+                  ),
+                ),
+              ],
         ),
       ),
     );
@@ -89,16 +84,20 @@ class CategoryItemState extends ConsumerState<CategoryItem> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Eliminar tarea'),
+            title: const Text('Eliminar categoría'),
             content: const Text(
-              '¿Estás seguro de que deseas eliminar esta tarea?',
+              '¿Estás seguro de que deseas eliminar esta categoría?',
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: const Text('Cancelar'),
               ),
-              TextButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                ),
                 onPressed: () => Navigator.of(context).pop(true),
                 child: const Text('Eliminar'),
               ),
@@ -107,16 +106,10 @@ class CategoryItemState extends ConsumerState<CategoryItem> {
     );
 
     if (confirm == true) {
-      // Obtener el TaskNotifier desde el provider
       final categoryNotifier = ref.read(categoryProvider.notifier);
-
-      // Eliminar la tarea
       await categoryNotifier.deleteCategory(widget.cat);
-
-      // Mostrar un mensaje de éxito
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Tarea eliminada exitosamente')),
+        const SnackBar(content: Text('Categoría eliminada exitosamente')),
       );
     }
   }
@@ -125,6 +118,9 @@ class CategoryItemState extends ConsumerState<CategoryItem> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(

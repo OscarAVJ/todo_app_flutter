@@ -77,9 +77,9 @@ CategoryEntity _categoryEntityDeserialize(
   final object = CategoryEntity(
     color: reader.readLong(offsets[0]),
     icon: reader.readLongOrNull(offsets[1]),
+    id: id,
     name: reader.readString(offsets[2]),
   );
-  object.id = id;
   return object;
 }
 

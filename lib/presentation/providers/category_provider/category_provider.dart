@@ -46,9 +46,7 @@ class CategoryNotifier extends StateNotifier<List<CategoryEntity>> {
     ];
   }
 
-  Future<List<CategoryEntity>> loadAllCategories(
-    CategoryEntity category,
-  ) async {
+  Future<List<CategoryEntity>> loadAllCategories() async {
     final categories = await categoryRepository.loadAllCategories();
     state = categories;
     return categories;

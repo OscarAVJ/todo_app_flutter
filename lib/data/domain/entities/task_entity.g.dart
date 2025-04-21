@@ -17,33 +17,28 @@ const TaskEntitySchema = CollectionSchema(
   name: r'TaskEntity',
   id: -2911998186285533288,
   properties: {
-    r'categoryId': PropertySchema(
-      id: 0,
-      name: r'categoryId',
-      type: IsarType.long,
-    ),
     r'createdAt': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'description': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'description',
       type: IsarType.string,
     ),
     r'dueDate': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'dueDate',
       type: IsarType.dateTime,
     ),
     r'isCompleted': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'isCompleted',
       type: IsarType.bool,
     ),
     r'title': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'title',
       type: IsarType.string,
     )
@@ -54,7 +49,14 @@ const TaskEntitySchema = CollectionSchema(
   deserializeProp: _taskEntityDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'category': LinkSchema(
+      id: 8847283037907089969,
+      name: r'category',
+      target: r'CategoryEntity',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _taskEntityGetId,
   getLinks: _taskEntityGetLinks,
@@ -84,12 +86,11 @@ void _taskEntitySerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.categoryId);
-  writer.writeDateTime(offsets[1], object.createdAt);
-  writer.writeString(offsets[2], object.description);
-  writer.writeDateTime(offsets[3], object.dueDate);
-  writer.writeBool(offsets[4], object.isCompleted);
-  writer.writeString(offsets[5], object.title);
+  writer.writeDateTime(offsets[0], object.createdAt);
+  writer.writeString(offsets[1], object.description);
+  writer.writeDateTime(offsets[2], object.dueDate);
+  writer.writeBool(offsets[3], object.isCompleted);
+  writer.writeString(offsets[4], object.title);
 }
 
 TaskEntity _taskEntityDeserialize(
@@ -99,13 +100,12 @@ TaskEntity _taskEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = TaskEntity(
-    categoryId: reader.readLongOrNull(offsets[0]),
-    createdAt: reader.readDateTimeOrNull(offsets[1]),
-    description: reader.readStringOrNull(offsets[2]),
-    dueDate: reader.readDateTimeOrNull(offsets[3]),
+    createdAt: reader.readDateTimeOrNull(offsets[0]),
+    description: reader.readStringOrNull(offsets[1]),
+    dueDate: reader.readDateTimeOrNull(offsets[2]),
     id: id,
-    isCompleted: reader.readBoolOrNull(offsets[4]) ?? false,
-    title: reader.readString(offsets[5]),
+    isCompleted: reader.readBoolOrNull(offsets[3]) ?? false,
+    title: reader.readString(offsets[4]),
   );
   return object;
 }
@@ -118,16 +118,14 @@ P _taskEntityDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
-    case 3:
+    case 2:
       return (reader.readDateTimeOrNull(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readBoolOrNull(offset) ?? false) as P;
-    case 5:
+    case 4:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -139,11 +137,13 @@ Id _taskEntityGetId(TaskEntity object) {
 }
 
 List<IsarLinkBase<dynamic>> _taskEntityGetLinks(TaskEntity object) {
-  return [];
+  return [object.category];
 }
 
 void _taskEntityAttach(IsarCollection<dynamic> col, Id id, TaskEntity object) {
   object.id = id;
+  object.category
+      .attach(col, col.isar.collection<CategoryEntity>(), r'category', id);
 }
 
 extension TaskEntityQueryWhereSort
@@ -225,79 +225,6 @@ extension TaskEntityQueryWhere
 
 extension TaskEntityQueryFilter
     on QueryBuilder<TaskEntity, TaskEntity, QFilterCondition> {
-  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition>
-      categoryIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'categoryId',
-      ));
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition>
-      categoryIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'categoryId',
-      ));
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition> categoryIdEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'categoryId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition>
-      categoryIdGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'categoryId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition>
-      categoryIdLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'categoryId',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition> categoryIdBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'categoryId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition>
       createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -794,22 +721,23 @@ extension TaskEntityQueryObject
     on QueryBuilder<TaskEntity, TaskEntity, QFilterCondition> {}
 
 extension TaskEntityQueryLinks
-    on QueryBuilder<TaskEntity, TaskEntity, QFilterCondition> {}
+    on QueryBuilder<TaskEntity, TaskEntity, QFilterCondition> {
+  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition> category(
+      FilterQuery<CategoryEntity> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'category');
+    });
+  }
+
+  QueryBuilder<TaskEntity, TaskEntity, QAfterFilterCondition> categoryIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'category', 0, true, 0, true);
+    });
+  }
+}
 
 extension TaskEntityQuerySortBy
     on QueryBuilder<TaskEntity, TaskEntity, QSortBy> {
-  QueryBuilder<TaskEntity, TaskEntity, QAfterSortBy> sortByCategoryId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'categoryId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterSortBy> sortByCategoryIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'categoryId', Sort.desc);
-    });
-  }
-
   QueryBuilder<TaskEntity, TaskEntity, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -873,18 +801,6 @@ extension TaskEntityQuerySortBy
 
 extension TaskEntityQuerySortThenBy
     on QueryBuilder<TaskEntity, TaskEntity, QSortThenBy> {
-  QueryBuilder<TaskEntity, TaskEntity, QAfterSortBy> thenByCategoryId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'categoryId', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TaskEntity, TaskEntity, QAfterSortBy> thenByCategoryIdDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'categoryId', Sort.desc);
-    });
-  }
-
   QueryBuilder<TaskEntity, TaskEntity, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -960,12 +876,6 @@ extension TaskEntityQuerySortThenBy
 
 extension TaskEntityQueryWhereDistinct
     on QueryBuilder<TaskEntity, TaskEntity, QDistinct> {
-  QueryBuilder<TaskEntity, TaskEntity, QDistinct> distinctByCategoryId() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'categoryId');
-    });
-  }
-
   QueryBuilder<TaskEntity, TaskEntity, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -1004,12 +914,6 @@ extension TaskEntityQueryProperty
   QueryBuilder<TaskEntity, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
-    });
-  }
-
-  QueryBuilder<TaskEntity, int?, QQueryOperations> categoryIdProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'categoryId');
     });
   }
 

@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:todo_app_flutter/data/domain/entities/category_entiti.dart';
 part 'task_entity.g.dart';
 
 @collection
@@ -10,7 +11,7 @@ class TaskEntity {
   final DateTime? createdAt;
   final DateTime? dueDate;
   bool isCompleted;
-  final int? categoryId;
+  final IsarLink<CategoryEntity> category = IsarLink(); // Relación real
 
   TaskEntity({
     this.id = Isar.autoIncrement,
@@ -19,6 +20,5 @@ class TaskEntity {
     this.createdAt,
     this.dueDate,
     this.isCompleted = false,
-    this.categoryId,
   });
 }
